@@ -32,66 +32,26 @@
 <body>
 
 	<div class="container" style="width: 500px; padding-top: 50px">
-	<div style="text-align: right;">
-	<a  href="${contextPath}/login?lang=de">
-                    <img alt="" src="${pageContext.request.contextPath}/img/german.png" >
-              </a>
-              
-    <a  href="${contextPath}/login?lang=en">
-                    <img alt=""  src="${pageContext.request.contextPath}/img/english.png" >
-              </a>
-	</div>
-	
-		<c:choose>
-			<c:when test="${exception == 'UserAlreadyExists'}">
-				<div class="alert alert-danger">
-					<strong><spring:message code="message.attention"/>! </strong><spring:message code="message.useralreadyexist"/>
-				</div>
-			</c:when>
-			<c:when test="${param.register == 'success'}">
-				<div class="alert alert-danger">
-					<strong><spring:message code="message.attention"/>! </strong><spring:message code="message.useralreadyexist"/>
-				</div>
-			</c:when>
-			<c:when test="${param.message}">
-				<div class="alert alert-danger">
-					<strong><spring:message code="message.attention"/>! </strong>${param.message}
-				</div>
-			</c:when>
-			<c:when test="${param.passwordReset == 'success'}">
-				<div class="alert alert-success">
-					<spring:message code="message.passwordresetsucces"/>
-				</div>
-			</c:when>
-		</c:choose>
-		<form action="login" class="was-validated" method="post">
-			<div class="form-group ${error != null ? 'has-error' : ''}">
-				<label for="username">Email:</label> <input type="text"
-					class="form-control" id="username" placeholder="Email"
-					name="username" required>
-
-			</div>
-			<div class="form-group ${error != null ? 'has-error' : ''}">
-				<label for="password">Password:</label> <input type="password"
-					class="form-control" id="password" placeholder="Password"
-					name="password" required> <span>${error}</span> <input
-					type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</div>
-
-			<button type="submit" class="btn btn-success">Login</button>
-			<c:choose>
-			<c:when test="${lang == null}">
-			<c:set var="lang" value="de"/>
-			</c:when>
-			<c:otherwise>
-			<c:set var="lang" value="${lang}"/>
-			</c:otherwise>
-			</c:choose>
-			<a role="button" class="btn btn-link" href="${contextPath}/forgetpassword?lang=${lang}"><spring:message code="label.button.passwordforget"/></a>
-			<a role="button" class="btn btn-link" href="${contextPath}/registration?lang=${lang}"><spring:message code="label.registerhere"/></a>
-
-		</form>
-	</div>
+          <!-- DataTales Example -->
+          <div class="card shadow mb-4">
+            <div class="card-header py-3">
+              <h6 class="m-0 font-weight-bold text-primary"><spring:message code="label.errorpage"/></h6>
+            </div>
+            <div class="card-body">
+              <div class="table-responsive">
+                <c:choose>
+                <c:when test="${exception == 'UserAlreadyExists'}">
+					<div class="alert alert-danger"><spring:message code="message.useralreadyexist" /></div>
+				</c:when>
+				<c:when test="${exception == 'UserAlreadyEnabled'}">
+					<div class="alert alert-danger"><spring:message code="message.useralreadyenabled" /></div>
+				</c:when>
+				</c:choose>
+              </div>
+            </div>
+          </div>
+          
+          </div>
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -133,3 +93,4 @@
 
 </html>
 
+          

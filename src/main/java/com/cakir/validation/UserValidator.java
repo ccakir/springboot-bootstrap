@@ -3,6 +3,7 @@ package com.cakir.validation;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
+import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
 
 import com.cakir.web.dto.UserRegistrationDto;
@@ -15,7 +16,7 @@ public class UserValidator implements Validator{
 	@Override
 	public boolean supports(Class<?> clazz) {
 		
-		return UserRegistrationDto.class.equals(clazz);
+		return UserRegistrationDto.class.isAssignableFrom(clazz);
 	}
 
 	@Override
@@ -23,16 +24,11 @@ public class UserValidator implements Validator{
 		
 		UserRegistrationDto userDto = (UserRegistrationDto) target;
 		
-		
-		if(!userDto.getEmail().isEmpty() && !userDto.getEmail().equals(userDto.getConfirmEmail())) {
-			
-			errors.rejectValue("confirmEmail", "emailconfirm", "label.error.emailconfirm");
-		}
-		
-		if(!userDto.getPassword().isEmpty() && !userDto.getConfirmPassword().isEmpty() && !userDto.getPassword().equals(userDto.getConfirmPassword())) {
-			errors.rejectValue("confirmPassword", "passwordconfirm", "label.error.passwordconfirm");
-		}
-		
+		ValidationUtils.rejectIfEmptyOrWhitespace(errors, "firstName", "message.firstName", "Firstname is required.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "lastName", "message.lastName", "LastName is required.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "password", "message.password", "LastName is required.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "email", "message.email", "UserName is required.");
+        ValidationUtils.rejectIfEmptyOrWhitespace(errors, "ort", "message.ort", "Ort is required.");
 		
 	}
 

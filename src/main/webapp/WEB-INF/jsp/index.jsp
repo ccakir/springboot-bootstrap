@@ -4,7 +4,7 @@
       
         <div class="container-fluid">
 
-          <%@include file="kundenList.jsp" %>
+          
 
         </div>
        

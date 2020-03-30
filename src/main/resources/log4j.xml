@@ -23,11 +23,35 @@
 		</layout>
 	</appender>
 	
+	<appender name="UserControllerAppender" class="org.apache.log4j.FileAppender">
+		<param name="File" value="logs/UserController.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%d{dd MMM yyyy HH:mm:ss,SSS} {%t} %-5p %c %x - %m%n"/>
+		</layout>
+	</appender>
+	
+	<appender name="ExceptionAppender" class="org.apache.log4j.FileAppender">
+		<param name="File" value="logs/Exception.log"/>
+		<layout class="org.apache.log4j.PatternLayout">
+		<param name="ConversionPattern" value="%d{dd MMM yyyy HH:mm:ss,SSS} {%t} %-5p %c %x - %m%n"/>
+		</layout>
+	</appender>
+	
 	
 
 	<logger name="com.cakir.service.impl">
 		<level value="INFO"/>
 		<appender-ref ref="OrtServiceAppender"/>
+	</logger>
+	
+	<logger name="com.cakir.controller">
+		<level value="INFO"/>
+		<appender-ref ref="UserControllerAppender"/>
+	</logger>
+	
+	<logger name="com.cakir.web.error">
+		<level value="INFO"/>
+		<appender-ref ref="ExceptionAppender"/>
 	</logger>
 	
 	

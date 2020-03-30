@@ -2,29 +2,30 @@ package com.cakir.model;
 
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 
 @Entity
-public class Role {
+public class Privilege {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String name;
-    
-    @ManyToMany
-    @JoinTable(name = "roles_privileges", joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "privilege_id", referencedColumnName = "id"))
-    private Collection<Privilege> privileges;
-    
-    @ManyToMany(mappedBy = "roles")
-    private Collection<User> users;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	
+	private String name;
+	
+	@ManyToMany(mappedBy = "privileges")
+	private Collection<Role> roles;
 
-	public Role() {
+	public Privilege() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Role(String name) {
+	public Privilege(String name) {
 		super();
 		this.name = name;
 	}
@@ -45,20 +46,12 @@ public class Role {
 		this.name = name;
 	}
 
-	public Collection<Privilege> getPrivileges() {
-		return privileges;
+	public Collection<Role> getRoles() {
+		return roles;
 	}
 
-	public void setPrivileges(Collection<Privilege> privileges) {
-		this.privileges = privileges;
-	}
-
-	public Collection<User> getUsers() {
-		return users;
-	}
-
-	public void setUsers(Collection<User> users) {
-		this.users = users;
+	public void setRoles(Collection<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
@@ -77,7 +70,7 @@ public class Role {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Role other = (Role) obj;
+		Privilege other = (Privilege) obj;
 		if (name == null) {
 			if (other.name != null)
 				return false;
@@ -89,14 +82,16 @@ public class Role {
 	@Override
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
-		builder.append("Role [id=");
+		builder.append("Privilege [id=");
 		builder.append(id);
 		builder.append(", name=");
 		builder.append(name);
 		builder.append("]");
 		return builder.toString();
 	}
-    
-    
-   
+
+	
+	
+	
+	
 }

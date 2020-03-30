@@ -27,16 +27,25 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
             .authorizeRequests()
             .antMatchers(
+            	"/userRegistrationConfirm",
+            	"/registration",
                 "/registration**",
+                "/exception/**",
+                "/forgetpassword",
+                "/updatePassword",
+                "/changePassword",
+                "/savePassword",
+                "/login",
                 "/js/**",
                 "/css/**",
                 "/img/**",
                 "/webjars/**").permitAll()
+            .antMatchers("/index").access("hasRole('ROLE_ADMIN')")
             .anyRequest().authenticated()
             .and()
             .formLogin()
             .loginPage("/login")
-            .defaultSuccessUrl("/", true)
+            .defaultSuccessUrl("/index", true)
             .permitAll()
             .and()
             .logout()

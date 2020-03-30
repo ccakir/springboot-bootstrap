@@ -1,16 +1,14 @@
 package com.cakir.model;
 
 import java.util.Collection;
-import java.util.Set;
-
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 
 @Entity
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = "email"))
 public class User {
 	
 	@Id
+	@Column(unique = true, nullable = false)
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
@@ -23,7 +21,7 @@ public class User {
 	@JoinColumn(name = "ort_id")
     private Ort ort;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
         name = "users_roles",
         joinColumns = @JoinColumn(
@@ -31,8 +29,18 @@ public class User {
         inverseJoinColumns = @JoinColumn(
             name = "role_id", referencedColumnName = "id"))
     private Collection < Role > roles;
+    
+    private boolean enabled;
+    
+    private boolean isUsing2FA;
+    
+    private String secret;
 
-    public User() {}
+    public User() {
+    	super();
+    	//this.secret = Base32.random();
+    	this.enabled = false;
+    }
 
     
 
@@ -55,6 +63,42 @@ public class User {
 		this.password = password;
 		this.ort = ort;
 		this.roles = roles;
+	}
+
+
+
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+
+
+	public boolean isUsing2FA() {
+		return isUsing2FA;
+	}
+
+
+
+	public void setUsing2FA(boolean isUsing2FA) {
+		this.isUsing2FA = isUsing2FA;
+	}
+
+
+
+	public String getSecret() {
+		return secret;
+	}
+
+
+
+	public void setSecret(String secret) {
+		this.secret = secret;
 	}
 
 

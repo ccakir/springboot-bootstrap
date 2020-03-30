@@ -1,5 +1,5 @@
 <%@ include file="../common/header.jsp"%>
-<%@ include file="../common/navigation.jsp"%>
+
 
 <!-- Page Heading -->
 
@@ -47,6 +47,8 @@
 						<th><spring:message code="label.email" /></th>
 						<th><spring:message code="label.jobLocation" /></th>
 						<th><spring:message code="label.role" /></th>
+						<th><spring:message code="label.accountstatus" /></th>
+						<th><spring:message code="label.accountverification" /></th>
 					</tr>
 				</thead>
 				<tfoot class="thead-dark">
@@ -56,6 +58,8 @@
 						<th><spring:message code="label.email" /></th>
 						<th><spring:message code="label.jobLocation" /></th>
 						<th><spring:message code="label.role" /></th>
+						<th><spring:message code="label.accountstatus" /></th>
+						<th><spring:message code="label.accountverification" /></th>
 					</tr>
 				</tfoot>
 				<tbody>
@@ -66,6 +70,8 @@
 							<td>${benutzer.email}</td>
 							<td>${benutzer.ort.ortsname}</td>
 							<td>${benutzer.roles[0].name}</td>
+							<td><a href="#" class="${benutzer.enabled == 'true' ? 'btn btn-success btn-circle' : 'btn btn-danger btn-circle'}"></a></td>
+							<td><c:if test="${benutzer.enabled == 'false'}"><a href="${contextPath}/benutzer/userverification/${benutzer.id}" class="btn btn-info" role="button"><spring:message code="label.button.sendverificationemail"/></a></c:if></td>
 
 						</tr>
 					</c:forEach>

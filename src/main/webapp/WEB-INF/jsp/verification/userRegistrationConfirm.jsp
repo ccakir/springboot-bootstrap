@@ -31,67 +31,58 @@
 </head>
 <body>
 
-	<div class="container" style="width: 500px; padding-top: 50px">
-	<div style="text-align: right;">
-	<a  href="${contextPath}/login?lang=de">
-                    <img alt="" src="${pageContext.request.contextPath}/img/german.png" >
-              </a>
-              
-    <a  href="${contextPath}/login?lang=en">
-                    <img alt=""  src="${pageContext.request.contextPath}/img/english.png" >
-              </a>
-	</div>
-	
-		<c:choose>
-			<c:when test="${exception == 'UserAlreadyExists'}">
-				<div class="alert alert-danger">
-					<strong><spring:message code="message.attention"/>! </strong><spring:message code="message.useralreadyexist"/>
-				</div>
-			</c:when>
-			<c:when test="${param.register == 'success'}">
-				<div class="alert alert-danger">
-					<strong><spring:message code="message.attention"/>! </strong><spring:message code="message.useralreadyexist"/>
-				</div>
-			</c:when>
-			<c:when test="${param.message}">
-				<div class="alert alert-danger">
-					<strong><spring:message code="message.attention"/>! </strong>${param.message}
-				</div>
-			</c:when>
-			<c:when test="${param.passwordReset == 'success'}">
-				<div class="alert alert-success">
-					<spring:message code="message.passwordresetsucces"/>
-				</div>
-			</c:when>
-		</c:choose>
-		<form action="login" class="was-validated" method="post">
-			<div class="form-group ${error != null ? 'has-error' : ''}">
-				<label for="username">Email:</label> <input type="text"
-					class="form-control" id="username" placeholder="Email"
-					name="username" required>
+	<div class="container" style="width: 1000px; padding-top: 50px">
 
-			</div>
-			<div class="form-group ${error != null ? 'has-error' : ''}">
-				<label for="password">Password:</label> <input type="password"
-					class="form-control" id="password" placeholder="Password"
-					name="password" required> <span>${error}</span> <input
-					type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
-			</div>
 
-			<button type="submit" class="btn btn-success">Login</button>
+
+
+
+	<div class="row">
+
+		<div class="col"></div>
+
+
+
+
+		<div class="col-xl-10 col-lg-7">
+
+			<h1>
+				<spring:message code="message.verificationtokentitel" />
+			</h1>
+
+
 			<c:choose>
-			<c:when test="${lang == null}">
-			<c:set var="lang" value="de"/>
-			</c:when>
-			<c:otherwise>
-			<c:set var="lang" value="${lang}"/>
-			</c:otherwise>
-			</c:choose>
-			<a role="button" class="btn btn-link" href="${contextPath}/forgetpassword?lang=${lang}"><spring:message code="label.button.passwordforget"/></a>
-			<a role="button" class="btn btn-link" href="${contextPath}/registration?lang=${lang}"><spring:message code="label.registerhere"/></a>
 
-		</form>
+				<c:when test="${token == 'invalidToken'}">
+					<div class="alert alert-danger">
+						<spring:message code="message.verificationtokeninvalid" />
+					</div>
+				</c:when>
+				<c:when test="${token == 'expired'}">
+					<div class="alert alert-info">
+						<spring:message code="message.verificationexpired" />
+					</div>
+				</c:when>
+				<c:when test="${token == 'valid'}">
+				<form:form method="post" action="login">
+				<input type="hidden" name="username" value="${username}"/>
+				<input type="hidden" name="password" value="${password}"/>
+					<div class="alert alert-success">
+						<spring:message code="message.verificationtokenvalid" />
+					</div><br>
+					<button type="submit" class="btn btn-success">Login</button>
+					</form:form>
+				</c:when>
+				
+			</c:choose>
+		</div>
+
+		<div class="col"></div>
 	</div>
+
+</div>
+
+
 
 	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
 		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -132,4 +123,5 @@
 </body>
 
 </html>
+
 

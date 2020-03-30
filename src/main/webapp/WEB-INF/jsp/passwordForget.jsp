@@ -44,13 +44,34 @@
  <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- 404 Error Text -->
-          <div class="text-center">
-            <div class="error mx-auto" data-text="404">404</div>
-            <p class="lead text-gray-800 mb-5"><spring:message code="label.page404"/></p>
-            
-          </div>
+          <h1><spring:message code="label.passwordforget"/></h1>
 
+		<c:choose>
+				<c:when test="${status == 'success'}">
+					<div class="alert alert-success">
+						<spring:message code="message.passwordresetsuccess" />
+					</div>
+				</c:when>
+				<c:when test="${status == 'UserNotFound'}">
+					<div class="alert alert-danger"><spring:message code="message.passwordresetsenderror" /></div>
+				</c:when>
+				
+
+			</c:choose>
+		<h8><spring:message code="label.passwordforgettext1"/></h8>
+		<br><br>
+		<form:form method="post" action="${contextPath}/forgetpassword">
+		<div class="input-group mb-3">
+    <div class="input-group-prepend">
+      <span class="input-group-text"><spring:message code="label.email"/></span>
+    </div>
+    
+    <input type="text" name="email" class="form-control">
+    
+    
+  </div>
+  <button type="submit" class="btn btn-success"><spring:message code="label.button.send"/></button>
+		</form:form>
         </div>
         <!-- /.container-fluid -->
 </div>
@@ -79,32 +100,8 @@
   
   <!-- End of Page Wrapper -->
 
-  <!-- Scroll to Top Button-->
-  <a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-  </a>
-
-  <!-- Logout Modal-->
-  <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel"><spring:message code="label.logout.title"/></h5>
-          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">Ã</span>
-          </button>
-        </div>
-        <div class="modal-body"><spring:message code="label.logout.question"/></div>
-        <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal"><spring:message code="label.cancel"/></button>
-         <form id="logoutForm" method="POST" action="${contextPath}/logout">
-            <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-             <button class="btn btn-primary" ><spring:message code="label.logout"/></button>
-             </form>
-        </div>
-      </div>
-    </div>
-  </div>
+ 
+  
 
   <!-- Bootstrap core JavaScript-->
   <script src="${contextPath}/vendor/jquery/jquery.min.js"></script>
