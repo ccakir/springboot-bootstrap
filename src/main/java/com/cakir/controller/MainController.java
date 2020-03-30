@@ -204,6 +204,7 @@ public class MainController {
 	    		return mav;
 	    	}
 	    	
+	    	//Wenn passworddto ok dann changepassword und zum login 
 	    	User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	    	userService.changeUserPassword(user, passwordDto.getNewPassword());
 	    	mav.addObject("passwordReset", "success");
