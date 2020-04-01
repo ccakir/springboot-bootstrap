@@ -194,7 +194,7 @@ public class UserServiceImpl implements UserService{
         }
 
         user.setEnabled(true);
-        
+        tokenRepository.delete(verificationToken);
         userRepository.save(user);
         return TOKEN_VALID;
 	}
@@ -223,6 +223,23 @@ public class UserServiceImpl implements UserService{
 		user.setPassword(passwordEncoder.encode(password));
 		userRepository.save(user);
 		
+	}
+
+	@Override
+	public void deleteUser(User user) {
+		final VerificationToken verificationToken = tokenRepository.findByUser(user);
+
+        if (verificationToken != null) {
+            tokenRepository.delete(verificationToken);
+        }
+
+        final PasswordResetToken passwordToken = passwordResetTokenRepository.findByUser(user);
+
+        if (passwordToken != null) {
+        	passwordResetTokenRepository.delete(passwordToken);
+        }
+
+        userRepository.delete(user);
 	}
 	
 	
