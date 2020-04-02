@@ -1,35 +1,23 @@
 pipeline {
-	agent any
-	tools {
-	    maven : 'Maven_3_6_3'
-	}
+    agent any
+    tools { 
+        maven 'Maven_3_6_3' 
+        jdk 'Java8' 
+    }
+    stages {
+        stage ('Initialize') {
+            steps {
+                
+                    echo "PATH = ${PATH}"
+                    echo "M2_HOME = ${M2_HOME}"
+                
+            }
+        }
 
-	
-	stages {
-	
-	stage('build') {
-           
-	        
-	       steps { sh 'mvn clean package'}
- 
-	   
-	    }
-	    
-	stage('Test') {
-	        steps {
-	            sh 'mvn test'
-	           
-	        }
-	        
-
-
-			
-	
-	    }
-
-    
-	}
-    
+        stage ('Build') {
+            steps {
+                echo 'This is a minimal pipeline.'
+            }
+        }
+    }
 }
-
-
