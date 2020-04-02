@@ -10,15 +10,16 @@ pipeline {
 	    }
 	    
 	    stage('test') {
-	        
-	        parallel (
-	        'unit tests' : {
-	                         sh 'mvn test'
-	                     },
-	        'integration tests' : {
-	                                sh 'mvn integration-test'                                
-	                            }
-			)
+	        steps {
+	            sh 'mvn clean package'
+	        }
+	        steps {
+	            
+	            sh 'mvn integration-test'
+	        }
+
+
+			
 	
 	    }
 
