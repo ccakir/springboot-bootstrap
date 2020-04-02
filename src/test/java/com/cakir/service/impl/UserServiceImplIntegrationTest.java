@@ -1,5 +1,7 @@
 package com.cakir.service.impl;
 
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotEquals;
@@ -8,6 +10,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import java.time.temporal.ChronoUnit;
+import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -16,9 +21,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cakir.model.Ort;
+import com.cakir.model.PasswordResetToken;
 import com.cakir.model.Role;
 import com.cakir.model.User;
 import com.cakir.model.VerificationToken;
@@ -26,8 +35,10 @@ import com.cakir.repository.RoleRepository;
 import com.cakir.repository.UserRepository;
 import com.cakir.repository.VerificationTokenRepository;
 import com.cakir.service.OrtService;
+import com.cakir.service.UserService;
 import com.cakir.web.dto.UserRegistrationDto;
 import com.cakir.web.error.EmailExistsException;
+import com.cakir.web.error.UserAlreadyEnabledException;
 import com.cakir.web.error.UserAlreadyExistException;
 
 @SpringBootTest
@@ -55,6 +66,7 @@ public class UserServiceImplIntegrationTest {
 		assertEquals(user.getEmail(), "test10@email");
 		assertNotNull(user);
 		assertNotNull(user.getId());
+		assertFalse(user.isEnabled());
 
 	}
 
@@ -183,7 +195,7 @@ public class UserServiceImplIntegrationTest {
 	}
 	
 	@Test
-	public void givenUserAndVerificationToken_whenTokenValidAndDeleteToken_thenCorrect() {
+	public void givenUserAndVerificationToken_whenTokenValid_thenDeleteToken_thenUserEnabled() {
 		
 		User user = userService.registerNewAccount(createUserDto("test11@email.com"));
 		assertFalse(user.isEnabled());
@@ -196,6 +208,157 @@ public class UserServiceImplIntegrationTest {
 		user = userService.findByEmail(user.getEmail());
 		assertTrue(user.isEnabled());
 		assertNull(foundToken);
+	}
+	
+	@Test
+	public void givenVerificationToken_whenTokenInvalid_thenReturnInvalid() {
+		
+		String result = userService.validateVerificationToken(UUID.randomUUID().toString());
+		assertNotNull(result);
+		assertEquals(result, UserServiceImpl.TOKEN_INVALID);
+		
+	}
+	
+	@Test
+	public void givenUserAndVerificationToken_whenTokenTimeExpired_thenDeleteToken_thenReturnTokenExpired() {
+		
+		User user = userService.registerNewAccount(createUserDto("test12@email.com"));
+		String token = UUID.randomUUID().toString();
+		userService.createVerificationTokenForUser(user, token);
+		
+		VerificationToken foundToken = userService.getVerificationToken(token);
+		foundToken.setExpiryDate(Date.from(foundToken.getExpiryDate().toInstant().minus(2, ChronoUnit.DAYS)));
+		verificationTokenrepository.saveAndFlush(foundToken);
+		
+		String result = userService.validateVerificationToken(token);
+		VerificationToken findToken = userService.getVerificationToken(token);
+		assertNull(findToken);
+		assertNotNull(result);
+		assertEquals(result, UserServiceImpl.TOKEN_EXPIRED);
+		
+	}
+	
+	@Test
+	public void givenUsers_whenCallAllUsers_thenReturnAllUser() {
+		
+		User user1 = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		User user2 = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		
+		List<User> listUser = userService.allUsers();
+		assertNotNull(listUser);
+		assertTrue(listUser.size() > 1);
+	}
+	
+	@Test
+	public void givenNewUser_whenUserNotEnabled_thenFalseUserAlreadyEnabled() {
+		
+		User user = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		assertFalse(user.isEnabled());
+		
+		boolean result = userService.UserAlreadyEnabled(user.getId());
+		assertFalse(result);
+		
+	}
+	
+	//Exception Kontrolle
+	@Test
+	public void givenEnabledUser_whenUserSetEnable_thenUserAlreadyEnabledException() {
+		
+		User user = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		user.setEnabled(true);
+		
+		userRepository.saveAndFlush(user);
+		User findUser = userService.findUserById(user.getId()).get();
+		assertTrue(findUser.isEnabled());
+		
+		assertThrows(UserAlreadyEnabledException.class, () -> {
+			userService.UserAlreadyEnabled(findUser.getId());
+		});
+		
+		
+	}
+	
+	@Test
+	public void givenUserAndPasswordResetToken_whenSave_thenCorrect() {
+		User user = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		String token = UUID.randomUUID().toString();
+		
+		userService.createPasswordResetTokenForUser(user, token);
+		PasswordResetToken pToken = userService.getPasswordResetToken(token);
+		assertNotNull(pToken);
+		assertEquals(user.getId(), pToken.getUser().getId());
+		assertEquals(token, pToken.getToken());
+	}
+	
+	@Test
+	public void givenUserAndPasswordResetToken_whenUserByPasswordResetToken_thenReturnUser_thenCorrect() {
+		User user = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		String token = UUID.randomUUID().toString();
+		userService.createPasswordResetTokenForUser(user, token);
+		
+		User foundUser = userService.getUserByPasswordResetToken(token);
+		
+		assertNotNull(foundUser);
+		assertEquals(foundUser.getId(), user.getId());
+	}
+	
+	@Test
+	public void givenUser_whenChancePassword_thenSetPasswordAndSaveUser() {
+		User user = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		String password = user.getPassword();
+		
+		String newPassword = "testPassword";
+		userService.changeUserPassword(user, newPassword);
+		
+		User foundUser = userService.findUserById(user.getId()).get();
+		
+		assertNotNull(foundUser);
+		assertNotNull(foundUser.getPassword());
+		assertNotEquals(foundUser.getPassword(), password);
+	}
+	
+	@Test
+	public void givenNewUserAndVerificationToeknForUserAndPasswordResetTokenForUser_whenDeleteUserAndDeleteTokens_thenCorrect() {
+		
+		User user = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		Long userId = user.getId();
+		String vToken = UUID.randomUUID().toString();
+		String pToken = UUID.randomUUID().toString();
+		userService.createVerificationTokenForUser(user, vToken);
+		userService.createPasswordResetTokenForUser(user, pToken);
+		
+		VerificationToken verificationToken = userService.getVerificationToken(vToken);
+		PasswordResetToken passwordResetToken = userService.getPasswordResetToken(pToken);
+		User findUser = userService.findUserById(user.getId()).get();
+		
+		assertNotNull(findUser);
+		assertNotNull(verificationToken);
+		assertNotNull(passwordResetToken);
+		
+		userService.deleteUser(findUser);
+		
+		User userAfterDelete = userService.findUserById(userId).orElse(null);
+		VerificationToken vTokenAfterDelete = userService.getVerificationToken(verificationToken.getToken());
+		PasswordResetToken pTokenAfterDelete = userService.getPasswordResetToken(passwordResetToken.getToken());
+		
+		assertNull(userAfterDelete);
+		assertNull(pTokenAfterDelete);
+		assertNull(vTokenAfterDelete);
+	}
+	
+	@Test
+	public void givenUsers_whenRequestingFirstPageSizeThree_thenReturnPageOneWithTwoUsers() {
+		User user10 = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		User user20 = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		User user30 = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		User user40 = userService.registerNewAccount(createUserDto(UUID.randomUUID().toString()));
+		
+		
+		List<User> list = userService.getAllUserPagination(0, 3, "id");
+		System.out.println(list);
+		assertTrue(list.size() == 3);
+		assertTrue(list.stream().map(User::getId).allMatch(id -> Arrays.asList(user40.getId(), user30.getId(), user20.getId()).contains(id)));
+		
 	}
 
 	//Methode
