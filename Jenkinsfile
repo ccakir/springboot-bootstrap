@@ -1,36 +1,20 @@
-pipeline {
-	agent any
-	tools {
-	    maven : 'Maven_3_6_3'
-	}
-
-	
-	stages {
-	
-	stage('build') {
-	steps {
-           
-	        
-	       steps { sh 'mvn clean package'}
- 
-	    }
-	    }
-	    
-	stage('Test') {
-	        steps {
-	            sh 'mvn test'
-	           
-	        }
-	        
-
-
-			
-	
-	    }
-
-    
-	}
-    
+node{
+    stage('Checkout'){
+        echo 'Checkout'
+    }
+    stage('Kompilieren'){
+        echo 'Kompilieren'
+    }
+    stage('Tests'){
+        echo 'Tests'
+    }
+    stage('Code-Analyse'){
+        echo 'Code-Analyse'
+    }
+    stage('Deployment'){
+        echo 'Deployment'
+    }
+    stage('Post-Build'){
+        echo 'Post-Build'
+    }
 }
-
-
