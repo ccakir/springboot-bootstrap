@@ -1,23 +1,24 @@
-pipeline {    
-    agent any
-    stages {
-        stage('Test') {
-            steps {             
-                echo 'Testing'             
-            }
-        }     
-        stage('Build') {
-            steps {
-                echo 'Building Project'
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo 'deploying'
-            }
-        }    
-	}
+node {
+    stage('build') {
+        
+        sh 'mvn clean package'
+    }
+    
+    stage('test') {
+        
+        parallel (
+        "unit tests" : {
+                         sh 'mvn test'
+                     },
+        "integration tests" : {
+                                sh 'mvn integration-test'                                
+                            }
+		)
 
+    }
+
+
+    
 }
 
 
