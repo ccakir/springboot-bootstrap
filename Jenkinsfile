@@ -12,10 +12,10 @@ pipeline {
 	    stage('test') {
 	        
 	        parallel (
-	        "unit tests" : {
+	        'unit tests' : {
 	                         sh 'mvn test'
 	                     },
-	        "integration tests" : {
+	        'integration tests' : {
 	                                sh 'mvn integration-test'                                
 	                            }
 			)
