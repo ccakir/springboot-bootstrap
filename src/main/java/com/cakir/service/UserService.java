@@ -20,7 +20,7 @@ public interface UserService  extends UserDetailsService{
 	
 	List<User> allUsers();
 	
-	List<User> getAllUserPagination(Integer pageNo, Integer pageSize, String sortBy);
+	List<User> getAllUserPagination(Integer pageNo, Integer pageSize);
 	
 	Optional<User> findUserById(Long id);
 	

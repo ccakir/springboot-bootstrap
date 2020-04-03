@@ -5,19 +5,18 @@ pipeline {
         jdk 'Java8' 
     }
     stages {
-        stage ('Initialize') {
-            steps {
-                
-                    echo "PATH = ${PATH}"
-                    echo "M2_HOME = ${M2_HOME}"
-                
-            }
-        }
+        
 
         stage ('Build') {
             steps {
-                echo 'This is a minimal pipeline.'
+                bat 'mvn clean package'
             }
         }
+        stage ('Test') {
+            steps {
+                bat 'mvn test'
+            }
+        }
+        
     }
 }

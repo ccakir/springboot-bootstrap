@@ -110,8 +110,7 @@ public class UserRegistrationController {
 
 	@GetMapping(value = "/allebenutzer/")
     public ModelAndView alleBenutzer(@RequestParam(defaultValue = "1") Integer pageNo,
-    		@RequestParam(defaultValue = "20") Integer pageSize, 
-    		@RequestParam(defaultValue = "id") String sortBy,
+    		@RequestParam(defaultValue = "20") Integer pageSize,
     		ModelMap model) {
     	long benutzerSize = userRepository.count();
     	long pages = benutzerSize / pageSize;
@@ -120,7 +119,7 @@ public class UserRegistrationController {
     	
     	List<Ort> listOrt = ortService.alleOrte();
     	
-    	model.put("benutzer", userService.getAllUserPagination(pageNo-1, pageSize, sortBy));
+    	model.put("benutzer", userService.getAllUserPagination(pageNo-1, pageSize));
     	model.put("benutzerSize", benutzerSize);
     	model.put("pageSize", pageSize);
     	model.put("pageNo", pageNo);

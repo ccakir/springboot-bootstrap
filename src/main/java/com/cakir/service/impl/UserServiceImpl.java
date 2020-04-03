@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService{
 	public UserDetails loadUserByUsername(String email) {
 		User user = userRepository.findByEmail(email);
         if (user == null) {
-            throw new UsernameNotFoundException("Invalid userna");
+            throw new UsernameNotFoundException("Invalid username");
         } else if(user.isEnabled() == false) {
         	
         	throw new UserNotEnabledException();
@@ -98,9 +98,9 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public List<User> getAllUserPagination(Integer pageNo, Integer pageSize, String sortBy) {
+	public List<User> getAllUserPagination(Integer pageNo, Integer pageSize) {
 		
-		Pageable paging = PageRequest.of(pageNo, pageSize, Sort.by(sortBy));
+		Pageable paging = PageRequest.of(pageNo, pageSize);
 		
 		Page<User> pagedResult = userRepository.findAll(paging);
 		
