@@ -1,25 +1,15 @@
 pipeline {
-    agent any
-    
-    stages {
-        
-
-        stage ('Build') {
-        
-        	steps {
-            withMaven(maven : 'Maven_3_6_3') {
-                bat'mvn clean compile'
-            }
-        }
-            steps {
-                bat 'package'
-            }
-        }
-        stage ('Test') {
-            steps {
-                bat 'mvn test'
-            }
-        }
-        
+  agent any
+  environment {
+    PATH = "C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\bin;${env.PATH}"
     }
+  stages {
+    stage('Build') {
+      steps {
+        sh 'mvn install'
+      }
+    }
+
+  }
 }
+
