@@ -359,6 +359,7 @@ public class UserServiceImplIntegrationTest {
 		assertNull(pTokenAfterDelete);
 		assertNull(vTokenAfterDelete);
 	}
+	
 
 	@Test
 	public void givenUsers_whenRequestingFirstPageSizeThree_thenReturnPageOneWithTwoUsers() {
@@ -368,9 +369,7 @@ public class UserServiceImplIntegrationTest {
 		List<User> list = userService.getAllUserPagination(0, 3);
 		assertTrue(list.size() == 3);
 
-		assertTrue(userSize > 10);
-		List<User> list2 = userService.getAllUserPagination(1, 4);
-		assertTrue(list2.size() == 4);
+		
 
 	}
 
