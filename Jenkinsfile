@@ -1,16 +1,13 @@
 pipeline {
   agent any
-  environment {
-    PATH = "C:\\Program Files\\Git\\usr\\bin;C:\\Program Files\\Git\\bin;${env.PATH}"
-    }
   stages {
     stage('Build') {
       steps {
         sh 'mvn clean package'
       }
-    }  
-      
-     stage('Build') {
+    }
+
+    stage('Test') {
       steps {
         sh 'mvn test'
       }
@@ -18,4 +15,3 @@ pipeline {
 
   }
 }
-
