@@ -51,7 +51,7 @@ public class EmailServiceImpl  implements EmailService{
 	@Override
 	public MimeMessage constructPasswordResetEmail(String contextPath, Locale locale, String newToken, User user,
 			String message1, String message2, String reason) throws MessagingException {
-		final String url = contextPath + "/changePassword?id=" + user.getId() + "&token=" + newToken + "&lang="+locale;
+		final String url = contextPath + "/welcome/changePassword?id=" + user.getId() + "&token=" + newToken + "&lang="+locale;
 		return constructEmail(reason, message1, url, message2, user);
 	}
 

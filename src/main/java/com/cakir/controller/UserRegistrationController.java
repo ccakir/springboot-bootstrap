@@ -19,6 +19,12 @@ import org.springframework.mail.MailException;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -45,7 +51,7 @@ import com.cakir.web.dto.UserRegistrationDto;
 import com.cakir.web.error.UserNotFoundException;
 
 @Controller
-@RequestMapping("benutzer")
+@RequestMapping("auth/admin/benutzer")
 public class UserRegistrationController {
 	
 	private final Log logger  = LogFactory.getLog(getClass());
@@ -77,6 +83,8 @@ public class UserRegistrationController {
     @Autowired
     private LocaleResolver localeResolver;
     
+   
+    
     
 
     public UserRegistrationController() {
@@ -86,25 +94,8 @@ public class UserRegistrationController {
 
 	
 
-   
+    
 
-    @PostMapping(value = "/registration")
-    public String registerUserAccount(@ModelAttribute("userForm")@Valid UserRegistrationDto userDto,
-        BindingResult result, ModelMap model, final HttpServletRequest request) {
-
-    	Locale locale = request.getLocale();
-    	
-    	if (result.hasErrors()) {
-        	model.put("ortList", ortService.alleOrte());
-        	model.put("status", "error");
-        	//model.put("selectedOrt", userDto.getOrt().getId());
-        	return "benutzer/registration";  	
-        }
-    	final User registiried = userService.registerNewAccount(userDto);
-    	
-    	     
-       return "redirect:/benutzer/registration?register=success&lang=" + locale.getLanguage(); 
-    }
     
    
 
@@ -126,6 +117,11 @@ public class UserRegistrationController {
     	model.put("pages", pages);
     	model.put("listOrt", listOrt);
     	ModelAndView mav = new ModelAndView("benutzer/benutzerList");
+    
+    	
+    	
+    	
+    	
     	
     	return mav;
 
@@ -196,7 +192,7 @@ public class UserRegistrationController {
 	
 	 private MimeMessage constructVerificationEmail(final String contextPath, final Locale locale, final String newToken, User user) throws MessagingException {
 		 
-		 final String url = contextPath + "/userRegistrationConfirm?id=" + user.getId() + "&token=" + newToken;
+		 final String url = contextPath + "/welcome/userRegistrationConfirm?id=" + user.getId() + "&token=" + newToken;
 		 
 		 final String message1 = messages.getMessage("message.registrationConfirm1", null, locale);
 		 final String message2 = messages.getMessage("message.registrationConfirm2", null, locale);

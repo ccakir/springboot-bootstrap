@@ -87,8 +87,8 @@
 			<c:set var="lang" value="${lang}"/>
 			</c:otherwise>
 			</c:choose>
-			<a role="button" class="btn btn-link" href="${contextPath}/forgetpassword?lang=${lang}"><spring:message code="label.button.passwordforget"/></a>
-			<a role="button" class="btn btn-link" href="${contextPath}/registration?lang=${lang}"><spring:message code="label.registerhere"/></a>
+			<a role="button" class="btn btn-link" href="${contextPath}/welcome/forgetpassword?lang=${lang}"><spring:message code="label.button.passwordforget"/></a>
+			<a role="button" class="btn btn-link" href="${contextPath}/welcome/registration?lang=${lang}"><spring:message code="label.registerhere"/></a>
 
 		</form>
 	</div>

@@ -84,10 +84,10 @@
         </a>
         <div id="collapseUtilitiesw" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="${pageContext.request.contextPath}/ort/alleorte">Alle Orte</a>
-            <a class="collapse-item" href="${pageContext.request.contextPath}/ort/addort">Neuer Ort hinzufügen</a>
-            <a class="collapse-item" href="${pageContext.request.contextPath}/ort/updateort">Ort ändern</a>
-            <a class="collapse-item" href="${pageContext.request.contextPath}/ort/deleteort">Ort löschen</a>
+            <a class="collapse-item" href="${pageContext.request.contextPath}/admin/ort/alleorte">Alle Orte</a>
+            <a class="collapse-item" href="${pageContext.request.contextPath}/admin/ort/addort">Neuer Ort hinzufügen</a>
+            <a class="collapse-item" href="${pageContext.request.contextPath}/admin/ort/updateort">Ort ändern</a>
+            <a class="collapse-item" href="${pageContext.request.contextPath}/admin/ort/deleteort">Ort löschen</a>
             
           </div>
         </div>
@@ -101,8 +101,7 @@
         </a>
         <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
-            <a class="collapse-item" href="${pageContext.request.contextPath}/benutzer/allebenutzer/">Alle Benutzer</a>
-            <a class="collapse-item" href="${pageContext.request.contextPath}/benutzer/registration">Neuer Benutzer erstellen</a>
+            <a class="collapse-item" href="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/">Alle Benutzer</a>
             <a class="collapse-item" href="utilities-animation.html">Benutzer löschen</a>
             <a class="collapse-item" href="utilities-other.html">Other</a>
           </div>

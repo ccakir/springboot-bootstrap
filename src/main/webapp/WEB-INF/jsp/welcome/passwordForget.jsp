@@ -60,7 +60,7 @@
 			</c:choose>
 		<h8><spring:message code="label.passwordforgettext1"/></h8>
 		<br><br>
-		<form:form method="post" action="${contextPath}/forgetpassword">
+		<form:form method="post" action="${contextPath}/welcome/forgetpassword">
 		<div class="input-group mb-3">
     <div class="input-group-prepend">
       <span class="input-group-text"><spring:message code="label.email"/></span>

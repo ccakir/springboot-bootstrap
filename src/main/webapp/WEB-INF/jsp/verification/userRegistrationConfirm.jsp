@@ -64,7 +64,7 @@
 					</div>
 				</c:when>
 				<c:when test="${token == 'valid'}">
-				<form:form method="post" action="login">
+				<form:form method="post" action="${contextPath}/login">
 				<input type="hidden" name="username" value="${username}"/>
 				<input type="hidden" name="password" value="${password}"/>
 					<div class="alert alert-success">

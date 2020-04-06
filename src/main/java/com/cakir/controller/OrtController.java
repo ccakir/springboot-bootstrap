@@ -25,7 +25,7 @@ import com.cakir.service.OrtService;
 import com.cakir.service.impl.OrtServiceImpl;
 
 @Controller
-@RequestMapping("ort/")
+@RequestMapping("auth/admin/ort/")
 public class OrtController {
 
 	@Autowired

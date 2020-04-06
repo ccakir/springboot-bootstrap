@@ -14,7 +14,7 @@ import com.cakir.model.User;
 import com.cakir.service.UserService;
 
 @Controller
-@RequestMapping("/benutzer/myaccount")
+@RequestMapping("auth/user/benutzer/myaccount")
 public class MeinKontoController {
 	
 	@Autowired

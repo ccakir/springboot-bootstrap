@@ -20,6 +20,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.LocaleResolver;
@@ -39,6 +40,7 @@ import com.cakir.web.error.UserNotFoundException;
 import com.google.common.collect.Sets.SetView;
 
 @RestController
+@RequestMapping("welcome")
 public class MainController {
 	
 	@Autowired
@@ -68,18 +70,30 @@ public class MainController {
 	@Autowired
 	private SecurityUserService securityUserService;
 
-	    @GetMapping("/")
-	    public ModelAndView root() {
-	    	return new ModelAndView("login");
+	    @GetMapping
+	    public ModelAndView root(HttpServletRequest request) {
+	    	if(request.isUserInRole("ROLE_ADMIN")) {
+	    		return new ModelAndView("admin/index");
+	    	} else if(request.isUserInRole("ROLE_USER")) {
+	    		return new ModelAndView("user/index");
+	    	}
+	    	return new ModelAndView("welcome/login");
 	    }
 	    @GetMapping("/index")
-	    public ModelAndView index() {
-	    	return new ModelAndView("index");
+	    public ModelAndView index(HttpServletRequest request) {
+	    	
+	    	if(request.isUserInRole("ROLE_ADMIN")) {
+	    		return new ModelAndView("admin/index");
+	    	} else if(request.isUserInRole("ROLE_USER")) {
+	    		return new ModelAndView("user/index");
+	    	}
+	    	return new ModelAndView("welcome/login");
+	    	
 	    }
 	    
 	    @GetMapping(value = "/registration")
 	    public ModelAndView showRegistrationForm() {
-	    	ModelAndView mav = new ModelAndView("registration");
+	    	ModelAndView mav = new ModelAndView("welcome/registration");
 	    	mav.addObject("userForm", new UserRegistrationDto());
 	    	mav.addObject("ortList", ortService.alleOrte());
 	    	return mav;
@@ -97,30 +111,17 @@ public class MainController {
 	    		mav.addObject("ortList", ortService.alleOrte());
 	    		mav.addObject("status", "error");
 	    		//mav.addObject("selectedOrt", userDto.getOrt());
-	    		mav.setViewName("registration");
+	    		mav.setViewName("welcome/registration");
 	        	return mav;  	
 	        }
 	    	final User registiried = userService.registerNewAccount(userDto);
 	    	
 	    	     
-	    	mav.setViewName("redirect:/registration?register=success&lang=" + locale.getLanguage()); 
+	    	mav.setViewName("redirect:/welcome/registration?register=success&lang=" + locale.getLanguage()); 
 	    	return mav;
 	    }
 
-	    @GetMapping("/login")
-	    public ModelAndView login(Model model, String error, String logout, HttpServletRequest request) {
-	    	
-	    	Locale locale = localeResolver.resolveLocale(request);
-	        if (error != null)
-	            model.addAttribute("error", "Username und Password sind ungültig.");
-
-	        if (logout != null)
-	            model.addAttribute("message", "Sie haben sich erfolgreich ausgeloggt!");
-	        ModelAndView mav = new ModelAndView();
-	        mav.setViewName("login");
-	        mav.addObject("lang", locale);
-	        return mav;
-	    }
+	    
 	    
 	    @GetMapping(value = "/userRegistrationConfirm")
 	    public ModelAndView registerConfirm(@RequestParam("id") final Long id, @RequestParam("token") final String token) {
@@ -141,7 +142,7 @@ public class MainController {
 	    	
 	    	
 	    	ModelAndView mav = new ModelAndView();
-	    	mav.setViewName("passwordForget");
+	    	mav.setViewName("welcome/passwordForget");
 	    	return mav;
 	    }
 	    
@@ -151,7 +152,7 @@ public class MainController {
 	    	Locale locale = localeResolver.resolveLocale(request);
 	    	
 	    	ModelAndView mav = new ModelAndView();
-	    	mav.setViewName("passwordForget");
+	    	mav.setViewName("welcome/passwordForget");
 	    	User user = userService.findByEmail(email);
 	    	    	
 	    	if(user == null) {
@@ -183,13 +184,13 @@ public class MainController {
 	    		mav.setViewName("redirect:/login?lang="+locale.getLanguage());
 	    		return mav;
 	    	}
-	    	mav.setViewName("redirect:/updatePassword?lang="+locale.getLanguage());
+	    	mav.setViewName("redirect:/welcome/updatePassword?lang="+locale.getLanguage());
 	    	return mav;
 	    }
 	    
 	    @GetMapping(value = "/updatePassword")
 	    public ModelAndView updatePasswordPage() {
-	    	ModelAndView mav = new ModelAndView("updatePassword");
+	    	ModelAndView mav = new ModelAndView("welcome/updatePassword");
 	    	mav.addObject("passwordDtoForm", new PasswordDto());
 	    	return mav;
 	    }
@@ -200,7 +201,7 @@ public class MainController {
 	    	
 	    	if(bindingResult.hasErrors()) {
 	    		
-	    		mav.setViewName("updatePassword");
+	    		mav.setViewName("welcome/updatePassword");
 	    		return mav;
 	    	}
 	    	

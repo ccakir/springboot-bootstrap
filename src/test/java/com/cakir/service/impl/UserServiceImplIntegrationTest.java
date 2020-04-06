@@ -78,6 +78,7 @@ public class UserServiceImplIntegrationTest {
 
 	@Test
 	public void givenNewUser_whenRegistered_thenCorrect() throws EmailExistsException {
+		
 
 		final User user = userService.registerNewAccount(createUserDto("test10@email"));
 		assertEquals(user.getEmail(), "test10@email");

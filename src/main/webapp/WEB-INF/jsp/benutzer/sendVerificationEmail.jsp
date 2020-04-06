@@ -24,7 +24,7 @@
 				<c:otherwise>
 				
 
-		<form:form action="${contextPath}/benutzer/userverification/sendVerificationEmail" method="post">
+		<form:form action="${contextPath}/admin/benutzer/userverification/sendVerificationEmail" method="post">
 	 <table class="table ">
    <input type="hidden" value="${user.id}" name="userId"/>
     <tbody>
