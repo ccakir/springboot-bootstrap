@@ -34,18 +34,6 @@ import com.google.common.base.Joiner;
 public class PasswordConstraintValidator implements ConstraintValidator<ValidPassword, String>{
 
 	
-	/*
-	 * 
-	 * 
-	 * @Override
-	 * public boolean isValid(String password, ConstraintValidatorContext context) {
-		
-		if(password.length() < 3 || password.length() > 15 || StringUtils.containsWhitespace(password)) return false;
-		 
-       return true;
-	}
-	 */
-	
 
 	 @Override
 	    public boolean isValid(String password, ConstraintValidatorContext context) {

@@ -1,11 +1,9 @@
 package com.cakir.web.dto;
 
 import com.cakir.validation.FieldMatch;
-import com.cakir.validation.PasswordMatches;
 import com.cakir.validation.ValidPassword;
 
 @FieldMatch(first = "newPassword", second = "confirmPassword", message = "label.error.emailconfirm")
-//@PasswordMatches
 public class PasswordDto {
 
 	 	private String oldPassword;

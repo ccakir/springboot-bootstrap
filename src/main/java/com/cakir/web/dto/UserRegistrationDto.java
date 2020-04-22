@@ -1,7 +1,6 @@
 package com.cakir.web.dto;
 
 import javax.validation.constraints.NotEmpty;
-import com.cakir.model.Ort;
 import com.cakir.validation.FieldMatch;
 import com.cakir.validation.ValidEmail;
 import com.cakir.validation.ValidPassword;

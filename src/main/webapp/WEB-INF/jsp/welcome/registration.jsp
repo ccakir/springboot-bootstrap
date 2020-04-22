@@ -46,11 +46,11 @@
 
             <div class="col-xl-4 col-lg-7">
 <div style="text-align: right;">
-	<a  href="${contextPath}/registration?lang=de">
+	<a  href="${contextPath}/welcome/registration?lang=de">
                     <img alt="" src="${pageContext.request.contextPath}/img/german.png" >
               </a>
               
-    <a  href="${contextPath}/registration?lang=en">
+    <a  href="${contextPath}/welcome/registration?lang=en">
                     <img alt=""  src="${pageContext.request.contextPath}/img/english.png" >
               </a>
 	</div>
