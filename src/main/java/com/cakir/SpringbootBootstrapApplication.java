@@ -8,6 +8,7 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 
 @SpringBootApplication
+@EnableAutoConfiguration
 public class SpringbootBootstrapApplication extends SpringBootServletInitializer{
 	
 	@Override
@@ -18,5 +19,7 @@ public class SpringbootBootstrapApplication extends SpringBootServletInitializer
 	public static void main(String[] args) {
 		SpringApplication.run(SpringbootBootstrapApplication.class, args);
 	}
+	
+	
 
 }

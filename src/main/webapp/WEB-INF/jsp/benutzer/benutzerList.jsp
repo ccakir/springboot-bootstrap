@@ -20,12 +20,12 @@
 				<label for="sel1" style="padding-right: 10px"><spring:message code="label.show"/></label>
 				<select class="form-control form-control-sm" id="sel1" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
 					<option></option>
-					<option value="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=5&pageNo=${pageNo}">5</option>
-					<option value="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=10&pageNo=${pageNo}">10</option>
-					<option value="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=20&pageNo=${pageNo}">20</option>
-					<option value="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=50&pageNo=${pageNo}">50</option>
-					<option value="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=100&pageNo=${pageNo}">100</option>
-					<option value="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=200&pageNo=${pageNo}">200</option>
+					<option value="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=5&pageNo=${pageNo}">5</option>
+					<option value="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=10&pageNo=${pageNo}">10</option>
+					<option value="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=20&pageNo=${pageNo}">20</option>
+					<option value="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=50&pageNo=${pageNo}">50</option>
+					<option value="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=100&pageNo=${pageNo}">100</option>
+					<option value="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=200&pageNo=${pageNo}">200</option>
 				</select><label for="sel1" style="padding-left: 10px"><spring:message code="label.entry"/></label> 
 				</div>
 			</div>
@@ -71,7 +71,7 @@
 							<td>${benutzer.ort.ortsname}</td>
 							<td>${benutzer.roles[0].name}</td>
 							<td><a href="#" class="${benutzer.enabled == 'true' ? 'btn btn-success btn-circle' : 'btn btn-danger btn-circle'}"></a></td>
-							<td><c:if test="${benutzer.enabled == 'false'}"><a href="${contextPath}/admin/benutzer/userverification/${benutzer.id}" class="btn btn-info" role="button"><spring:message code="label.button.sendverificationemail"/></a></c:if></td>
+							<td><c:if test="${benutzer.enabled == 'false'}"><a href="${contextPath}/auth/admin/benutzer/userverification/${benutzer.id}" class="btn btn-info" role="button"><spring:message code="label.button.sendverificationemail"/></a></c:if></td>
 
 						</tr>
 					</c:forEach>
@@ -98,17 +98,17 @@
                 %>
 				<li class="page-item ${pageNo == 1 ? 'disabled' : '' }"><a
 					class="page-link"
-					href="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=${pageSize}&pageNo=<%=previous%>"><spring:message
+					href="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=${pageSize}&pageNo=<%=previous%>"><spring:message
 							code="label.button.previous" /></a></li>
 				<c:forEach begin="1" end="${pages}" var="pageNumber">
 					<li class="page-item ${pageNo == pageNumber ? 'active' : ''}"><a
 						class="page-link"
-						href="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=${pageSize}&pageNo=${pageNumber}">${pageNumber}</a></li>
+						href="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=${pageSize}&pageNo=${pageNumber}">${pageNumber}</a></li>
 				</c:forEach>
 
 				<li class="page-item ${pageNo == pages ? 'disabled' : '' }"><a
 					class="page-link"
-					href="${pageContext.request.contextPath}/admin/benutzer/allebenutzer/?pageSize=${pageSize}&pageNo=<%=next%>"><spring:message
+					href="${pageContext.request.contextPath}/auth/admin/benutzer/allebenutzer/?pageSize=${pageSize}&pageNo=<%=next%>"><spring:message
 							code="label.button.next" /></a></li>
 			</ul>
 		</div>
